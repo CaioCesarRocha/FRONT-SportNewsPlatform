@@ -17,7 +17,6 @@ export type Championship = {
 }
 
 export type ClubTitle = {
-  titlesCount: number;
   championship: Championship;
 }
 
@@ -28,11 +27,32 @@ export type Club = {
   state: string;
   shield: string;
   stadium: string;
+  slug: string;
   titles: ClubTitle[];
+}
+
+export type Round = {
+  id: string;
+  championshipId: number;
+  identifier: string;
+  phase: string;
+  homeTeam: Club;
+  visitTeam: Club;
+  homeGoals: number;
+  visitGoals: number;
+  date: Date;
 }
 
 export type CreateClubInput = Omit<Club, 'id' | 'titles' | 'shield'> & {
   shield: File;
+}
+
+export type UpdateClubInput = { id: string } & Omit<CreateClubInput, 'shield'> & {
+  shield?: File;
+}
+
+export type ChampionshipWithClubs = Championship & {
+  clubs: Club[]
 }
 
 export type CreateChampionshipInput = {
@@ -42,4 +62,11 @@ export type CreateChampionshipInput = {
   name: string;
   type: ChampionshipType;
   weight: number;
+}
+
+export type UpdateChampionshipInput = {
+  id: number;
+  name: string;
+  weight: number;
+  emblem?: File;
 }

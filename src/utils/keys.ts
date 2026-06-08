@@ -1,2 +1,5 @@
 export const GET_CHAMPIONSHIP_KEY = 'championships'
+export const GET_ONE_CHAMPIONSHIP_KEY = 'get-one-championship'
+export const GET_ROUNDS_KEY = 'rounds'
 export const LIST_ALL_CLUBS_KEY = 'list-all-clubs'
+export const LIST_CLUBS_BY_LOCATION_KEY = 'list-clubs-by-location'
