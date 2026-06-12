@@ -14,6 +14,9 @@ export type Championship = {
   type: ChampionshipType;
   weight: number;
   clubsCount: number;
+  relegation: number;
+  qualifyOne: number;
+  qualifyTwo: number;
 }
 
 export type ClubTitle = {
@@ -62,6 +65,9 @@ export type CreateChampionshipInput = {
   name: string;
   type: ChampionshipType;
   weight: number;
+  relegation: number;
+  qualifyOne: number;
+  qualifyTwo: number;
 }
 
 export type UpdateChampionshipInput = {
@@ -69,4 +75,7 @@ export type UpdateChampionshipInput = {
   name: string;
   weight: number;
   emblem?: File;
+  relegation: number;
+  qualifyOne: number;
+  qualifyTwo: number;
 }
