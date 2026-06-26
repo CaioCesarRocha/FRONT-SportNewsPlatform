@@ -51,11 +51,11 @@ function MenuEntry({
         data-menu-key={item.key}
         className={`flex w-full items-center justify-between rounded-2xl border px-4 py-4 text-left transition-colors ${
           isInteractive
-            ? 'cursor-pointer border-green-200 bg-white text-green-950 hover:border-green-400 hover:bg-green-50'
+            ? 'cursor-pointer border-green-200 bg-gray-200 text-green-950 hover:border-green-400 hover:bg-green-50'
             : 'cursor-default border-green-100 bg-green-50/70 text-green-900'
         }`}
       >
-        <span className="flex flex-col gap-1">
+        <span className="flex flex-col gap-1 tracking-[1px]">
           <span className="text-base font-semibold">{item.label}</span>
           {item.description ? (
             <span className="text-sm font-medium text-green-800/80">{item.description}</span>
@@ -147,17 +147,17 @@ export default function Menu({ isOpen, onClose }: MenuProps) {
         id={MENU_DRAWER_ID}
         aria-modal="true"
         role="dialog"
-        className="relative flex h-[100svh] w-full max-w-sm flex-col overflow-hidden bg-white text-green-950 shadow-2xl"
+        className="relative flex h-[100svh] w-full max-w-sm flex-col overflow-hidden bg-green-950 text-gray-200 shadow-2xl"
       >
-        <div className="flex items-center justify-between border-b border-green-100 px-5 py-5">
+        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-5">
           {activeView === 'root' ? (
-            <span className="text-lg font-semibold tracking-[0.08em] text-green-900 uppercase">
+            <span className="text-lg font-semibold tracking-[0.08em] text-gray-200 uppercase">
               Menu
             </span>
           ) : (
             <Button
               onClick={goBack}
-              className="flex items-center gap-2 text-lg font-semibold text-green-900 transition-colors hover:text-green-700"
+              className="flex items-center gap-2 text-lg font-semibold text-gray-200 transition-colors hover:text-gray-400"
             >
               <span aria-hidden="true" className="text-2xl leading-none">
                 &lt;
@@ -169,7 +169,7 @@ export default function Menu({ isOpen, onClose }: MenuProps) {
           <Button
             onClick={onClose}
             aria-label="Close navigation menu"
-            className="rounded-full p-2 text-green-900 transition-colors hover:bg-green-100"
+            className="rounded-full p-2 text-gray-200 transition-colors hover:bg-gray-600"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
               <path

@@ -41,7 +41,9 @@ export default function CardChampionship({ champ, onEdit }: CardChampionshipProp
             fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </button>
-      <img src={champ.emblem} alt={champ.name} className="w-full pt-1 max-w-32 h-auto max-h-32 cursor-pointer" />
+      <div className="flex-1 flex items-center justify-center overflow-hidden p-2">
+        <img src={champ.emblem} alt={champ.name} className="w-full max-w-32 h-auto max-h-32 cursor-pointer" />
+      </div>
       <div className="flex flex-col w-full h-16 justify-center text-gray-300 text-md bg-blue-900 rounded-[2px] p-2">
         <p className="font-medium leading-tight">{champ.name}</p>
       </div>
