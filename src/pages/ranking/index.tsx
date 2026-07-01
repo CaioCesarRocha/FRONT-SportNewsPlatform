@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useListAllClubs from '../../hooks/useListAllClubs'
-import type { Club } from '../../utils/types'
+import useGetClubsPerformance from '../../hooks/useGetClubsPerformance'
+import type { Club, ClubPerformance } from '../../utils/types'
 
 type ClubRanking = {
   club: Club
@@ -90,11 +92,85 @@ function PositionBadge({ position }: { position: number }) {
   )
 }
 
+function PerformanceTable({ ranking, sortBy, onSortChange }: {
+  ranking: ClubPerformance[]
+  sortBy: string
+  onSortChange: (value: 'victory' | 'pontuation' | 'performance') => void
+}) {
+  const options: { value: 'victory' | 'pontuation' | 'performance'; label: string }[] = [
+    { value: 'victory', label: 'Victory' },
+    { value: 'pontuation', label: 'Pontuation' },
+    { value: 'performance', label: 'Performance' },
+  ]
+
+  return (
+    <div className="flex-[2] max-h-[80vh] overflow-auto rounded-lg border border-[var(--border)]">
+      <div className="sticky top-0 z-10 flex items-center justify-between gap-2 bg-[var(--bg)] px-4 py-2 border-b border-[var(--border)]">
+        <h3 className="text-sm font-semibold text-[var(--text-h)]">Performance</h3>
+        <div className="flex gap-1">
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onSortChange(opt.value)}
+              className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
+                sortBy === opt.value
+                  ? 'bg-[var(--text-h)] text-[var(--bg)]'
+                  : 'bg-[var(--code-bg)] text-[var(--text)] hover:bg-[var(--border)]'
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <table className="w-full border-collapse text-sm">
+        <thead className="sticky top-0 z-10 bg-[var(--bg)]">
+          <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wider text-[var(--text)]">
+            <th className="px-4 py-3 w-64">Classification</th>
+            <th className="px-4 py-3 w-20 text-right">Pts</th>
+            <th className="px-4 py-3 w-20 text-right">J</th>
+            <th className="px-4 py-3 w-20 text-right">W</th>
+            <th className="px-4 py-3 w-20 text-right">D</th>
+            <th className="px-4 py-3 w-20 text-right">L</th>
+            <th className="px-4 py-3 w-24 text-right">%</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranking.map((item, index) => (
+            <tr
+              key={item.id}
+              className="border-b border-[var(--border)] transition-colors hover:bg-[var(--accent-bg)]"
+            >
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <PositionBadge position={index + 1} />
+                  <div className="flex items-center gap-2">
+                    {item.club.shield ? (
+                      <img src={item.club.shield} alt={item.club.name} className="h-6 w-6" />
+                    ) : null}
+                    <span className="font-medium text-[var(--text-h)]">{item.club.name}</span>
+                  </div>
+                </div>
+              </td>
+              <td className="px-4 py-3 text-right font-semibold text-[var(--text-h)]">{item.pontuation}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.games}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.victories}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.draws}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.defeats}</td>
+              <td className="px-4 py-3 text-right font-semibold text-[var(--text-h)]">{(item.performance * 100).toFixed(2).replace('.', ',')}%</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
   const positions = getDisplayPositions(ranking)
 
   return (
-    <div className="flex-[2] overflow-auto rounded-lg border border-[var(--border)]" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+    <div className="flex-[2] max-h-[80vh] overflow-auto rounded-lg border border-[var(--border)]">
       <h3 className="sticky top-0 z-10 bg-[var(--bg)] px-4 py-2 text-sm font-semibold text-[var(--text-h)] border-b border-[var(--border)]">
         Club Ranking
       </h3>
@@ -153,7 +229,7 @@ function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
 
 function CountryTable({ ranking }: { ranking: CountryRanking[] }) {
   return (
-    <div className="flex-1 overflow-auto rounded-lg border border-[var(--border)]" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+    <div className="flex-1 max-h-[80vh] overflow-auto rounded-lg border border-[var(--border)]">
       <h3 className="sticky top-0 z-10 bg-[var(--bg)] px-4 py-2 text-sm font-semibold text-[var(--text-h)] border-b border-[var(--border)]">
         Country Ranking
       </h3>
@@ -188,25 +264,34 @@ function CountryTable({ ranking }: { ranking: CountryRanking[] }) {
 }
 
 export default function Ranking() {
+  const [sortBy, setSortBy] = useState<'victory' | 'pontuation' | 'performance'>('pontuation')
   const { clubs, error, isLoading } = useListAllClubs()
+  const { clubsPerformance, error: perfError, isLoading: perfLoading } = useGetClubsPerformance(sortBy)
   const clubRanking = buildClubRanking(clubs)
   const countryRanking = buildCountryRanking(clubs)
 
   return (
-    <div className="flex max-h-[800px] w-full flex-col p-2">
+    <div className="flex w-full flex-col p-2 overflow-y-auto">
       <h2 className="mb-4 text-2xl font-semibold text-[var(--text-h)]">World Ranking</h2>
 
-      {isLoading ? <div className="w-full p-4 text-green-900">Loading ranking...</div> : null}
-      {error ? <div className="w-full p-4 text-red-700">{error}</div> : null}
+      {isLoading || perfLoading ? <div className="w-full p-4 text-green-900">Loading ranking...</div> : null}
+      {error || perfError ? <div className="w-full p-4 text-red-700">{error || perfError}</div> : null}
 
       {!isLoading && !error && clubs.length === 0 ? (
         <div className="w-full p-4 text-[var(--text)]">No clubs registered yet.</div>
       ) : null}
 
       {!isLoading && !error && clubs.length > 0 ? (
-        <div className="flex flex-row gap-4 flex-1 min-h-0">
-          <ClubTable ranking={clubRanking} />
-          <CountryTable ranking={countryRanking} />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row gap-4">
+            <ClubTable ranking={clubRanking} />
+            <CountryTable ranking={countryRanking} />
+          </div>
+          <PerformanceTable
+            ranking={clubsPerformance}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+          />
         </div>
       ) : null}
     </div>
