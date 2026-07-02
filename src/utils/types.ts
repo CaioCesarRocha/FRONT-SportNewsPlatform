@@ -34,6 +34,17 @@ export type Club = {
   titles: ClubTitle[];
 }
 
+export type ClubPerformance = {
+  id: string;
+  club: Club;
+  victories: number;
+  draws: number;
+  defeats: number;
+  pontuation: number;
+  performance: number;
+  games: number;
+};
+   
 export type Round = {
   id: string;
   championshipId: number;

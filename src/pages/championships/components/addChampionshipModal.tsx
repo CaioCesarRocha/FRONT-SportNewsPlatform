@@ -19,7 +19,7 @@ const inputClassName =
 const errorClassName = 'text-sm font-medium text-red-700'
 
 const championshipTypeOptions = Object.values(ChampionshipType)
-const weightOptions = [1, 2, 3, 4, 5, 6, 7]
+const weightOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 function formatChampionshipTypeLabel(type: string) {
   return type.charAt(0).toUpperCase() + type.slice(1)
