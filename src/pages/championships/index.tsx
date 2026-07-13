@@ -25,12 +25,12 @@ export default function Championships() {
       <div className="w-full p-2">
         <div className="mb-4 flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-green-800/70">
+            <p className="text-2xl font-semibold uppercase tracking-[0.16em] text-green-400/70">
               Championships
             </p>
-            <h2 className="mt-2 text-3xl font-semibold text-green-950">
+            <h2 className="mt-2 text-md font-semibold tracking-[0.08em] text-gray-100/90">
               {championshipKey
-                ? formatChampionshipKey(championshipKey)
+                ? championships[0]?.name ?? formatChampionshipKey(championshipKey)
                 : 'Choose a championship in the menu'}
             </h2>
           </div>
