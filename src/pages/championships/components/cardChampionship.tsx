@@ -26,6 +26,13 @@ export default function CardChampionship({ champ, onEdit }: CardChampionshipProp
       )}
       onClick={handleCardClick}
     >
+      <div className="absolute left-0 top-0 flex p-1">
+        {Array.from({ length: champ.weight }).map((_, i) => (
+          <svg key={i} viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-yellow-400">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        ))}
+      </div>
       <button
         onClick={(e) => {
           e.stopPropagation()
@@ -41,8 +48,8 @@ export default function CardChampionship({ champ, onEdit }: CardChampionshipProp
             fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </button>
-      <div className="flex-1 flex items-center justify-center overflow-hidden p-2">
-        <img src={champ.emblem} alt={champ.name} className="w-full max-w-32 h-auto max-h-32 cursor-pointer" />
+      <div className="flex-1 flex items-center justify-center overflow-hidden p-1 pt-7">
+        <img src={champ.emblem} alt={champ.name} className="w-full max-w-26 h-auto max-h-26 cursor-pointer" />
       </div>
       <div className="flex flex-col w-full h-16 justify-center text-gray-300 text-md bg-blue-900 rounded-[2px] p-2">
         <p className="font-medium leading-tight">{champ.name}</p>
