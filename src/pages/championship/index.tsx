@@ -256,7 +256,7 @@ export default function ChampionshipDetail() {
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-green-800/70">Championship</p>
-          <h2 className="mt-2 text-3xl font-semibold text-green-950">{championship?.name ?? ''}</h2>
+          <h2 className="mt-2 text-3xl font-semibold text-gray-200/70">{championship?.name ?? ''}</h2>
         </div>
 
         <div className="flex items-center gap-3">

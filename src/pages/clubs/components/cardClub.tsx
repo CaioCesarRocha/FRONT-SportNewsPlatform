@@ -31,7 +31,7 @@ export default function CardClub({ club, onEdit }: CardClubProps) {
       </button>
       <img src={club.shield} alt={'shield team'} className="h-auto max-h-28 cursor-pointer pt-1" />
       <div className="flex flex-col w-full max-h-16  text-md bg-green-900 rounded-[2px] p-2">
-        <p className="font-medium text-gray-200 tracking-[1.12px]">{truncate(club.name, 19)}</p>
+        <p className="font-medium text-gray-200 tracking-[1.12px]">{truncate(club.name, 17)}</p>
         <p className="whitespace-nowrap text-gray-400">{truncate(location, 23)}</p>
       </div>
     </div>

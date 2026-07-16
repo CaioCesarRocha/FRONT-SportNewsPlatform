@@ -28,7 +28,7 @@ export default function Championships() {
             <p className="text-2xl font-semibold uppercase tracking-[0.16em] text-green-400/70">
               Championships
             </p>
-            <h2 className="mt-2 text-md font-semibold tracking-[0.08em] text-gray-100/90">
+            <h2 className="mt-2 text-md font-semibold tracking-[0.08em] text-gray-100">
               {championshipKey
                 ? championships[0]?.name ?? formatChampionshipKey(championshipKey)
                 : 'Choose a championship in the menu'}

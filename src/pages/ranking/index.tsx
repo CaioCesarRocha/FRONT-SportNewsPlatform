@@ -92,10 +92,12 @@ function PositionBadge({ position }: { position: number }) {
   )
 }
 
-function PerformanceTable({ ranking, sortBy, onSortChange }: {
+function PerformanceTable({ ranking, sortBy, onSortChange, order, onOrderChange }: {
   ranking: ClubPerformance[]
   sortBy: string
   onSortChange: (value: 'victory' | 'pontuation' | 'performance') => void
+  order: 'desc' | 'asc'
+  onOrderChange: (value: 'desc' | 'asc') => void
 }) {
   const options: { value: 'victory' | 'pontuation' | 'performance'; label: string }[] = [
     { value: 'victory', label: 'Victory' },
@@ -121,6 +123,12 @@ function PerformanceTable({ ranking, sortBy, onSortChange }: {
               {opt.label}
             </button>
           ))}
+          <button
+            onClick={() => onOrderChange(order === 'desc' ? 'asc' : 'desc')}
+            className="rounded px-2.5 py-1 text-xs font-medium transition-colors bg-gray-300/70 text-gray-900 hover:bg-gray-500/70 cursor-pointer"
+          >
+            {order === 'desc' ? 'Desc ↓' : 'Asc ↑'}
+          </button>
         </div>
       </div>
       <table className="w-full border-collapse text-sm">
@@ -136,7 +144,7 @@ function PerformanceTable({ ranking, sortBy, onSortChange }: {
           </tr>
         </thead>
         <tbody>
-          {ranking.map((item, index) => (
+          {(order === 'asc' ? [...ranking].reverse() : ranking).map((item, index) => (
             <tr
               key={item.id}
               className="border-b border-[var(--border)] transition-colors hover:bg-[var(--accent-bg)]"
@@ -265,6 +273,7 @@ function CountryTable({ ranking }: { ranking: CountryRanking[] }) {
 
 export default function Ranking() {
   const [sortBy, setSortBy] = useState<'victory' | 'pontuation' | 'performance'>('pontuation')
+  const [order, setOrder] = useState<'desc' | 'asc'>('desc')
   const { clubs, error, isLoading } = useListAllClubs()
   const { clubsPerformance, error: perfError, isLoading: perfLoading } = useGetClubsPerformance(sortBy)
   const clubRanking = buildClubRanking(clubs)
@@ -291,6 +300,8 @@ export default function Ranking() {
             ranking={clubsPerformance}
             sortBy={sortBy}
             onSortChange={setSortBy}
+            order={order}
+            onOrderChange={setOrder}
           />
         </div>
       ) : null}
