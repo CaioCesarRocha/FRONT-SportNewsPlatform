@@ -186,7 +186,7 @@ function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
         <thead className="sticky top-0 z-10 bg-[var(--bg)]">
           <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wider text-[var(--text)]">
             <th className="px-4 py-3 w-64">Classification</th>
-            <th className="px-4 py-3 w-auto">Titles</th>
+            <th className="px-4 py-3 w-auto">Titles/Relegation</th>
             <th className="px-4 py-3 w-24 text-right">Pontuation</th>
           </tr>
         </thead>
@@ -203,7 +203,7 @@ function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
                     {item.club.shield ? (
                       <img src={item.club.shield} alt={item.club.name} className="h-6 w-6" />
                     ) : null}
-                    <span className="font-medium text-[var(--text-h)]">{item.club.name}</span>
+                    <span className="font-medium text-[var(--text-h)] text-gray-100 racking-[0.5px]">{item.club.name}</span>
                   </div>
                 </div>
               </td>
@@ -212,16 +212,30 @@ function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
                   {item.club.titles.length > 0 ? (
                     item.club.titles.map((t, i) => (
                       <Link
-                        key={i}
+                        key={`title-${i}`}
                         to={`/championship/${t.championship.id}`}
-                        className="inline-block rounded-full bg-[var(--code-bg)] px-2.5 py-0.5 text-xs text-[var(--text-h)] transition-colors hover:bg-[var(--border)]"
+                        className="inline-block tracking-[1px] rounded-full bg-green-700/50 px-2.5 py-0.5 text-xs text-gray-100/85 transition-colors hover:bg-green-800"
                       >
                         {t.championship.name}
                       </Link>
                     ))
-                  ) : (
+                  ) : null}
+
+                  {item.club.relegations?.length > 0 ? (
+                    item.club.relegations.map((c, i) => (
+                      <Link
+                        key={`relegation-${i}`}
+                        to={`/championship/${c.championship.id}`}
+                        className="inline-block tracking-[1px] rounded-full bg-red-700/70 px-2.5 py-0.5 text-xs text-gray-100/85 transition-colors hover:bg-red-800"
+                      >
+                        {c.championship.name}
+                      </Link>
+                    ))
+                  ) : null}
+
+                  {item.club.titles.length === 0 && (!item.club.relegations || item.club.relegations.length === 0) ? (
                     <span className="text-[var(--text)] italic">No titles</span>
-                  )}
+                  ) : null}
                 </div>
               </td>
               <td className="px-4 py-3 text-right font-semibold text-[var(--text-h)]">

@@ -23,6 +23,17 @@ export type ClubTitle = {
   championship: Championship;
 }
 
+export type ClubRelegation = {
+  championship: {
+    id: number;
+    name: string;
+    type: "elimination rounds" | "league" | "mixed" | "groups";
+    weight: number;
+    emblem: string;
+    clubsCount: number;
+  };
+};
+
 export type Club = {
   id: string;
   name: string;
@@ -32,6 +43,7 @@ export type Club = {
   stadium: string;
   slug: string;
   titles: ClubTitle[];
+  relegations: ClubTitle[];
 }
 
 export type ClubPerformance = {

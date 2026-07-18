@@ -7,6 +7,7 @@ import GroupTable from '../championships/components/tables/group'
 import RoundMatches from './components/roundMatches'
 import AddRoundModal from './components/addRoundModal'
 import FinishChampionshipModal from './components/finishChampionshipModal'
+import RelegateClubModal from './components/relegateClubModal'
 import Button from '../../components/button'
 import useGetOneChampionship from '../../hooks/useGetOneChampionship'
 import useGetRounds from '../../hooks/useGetRounds'
@@ -211,6 +212,7 @@ export default function ChampionshipDetail() {
   const [roundIndex, setRoundIndex] = useState(-1)
   const [isAddRoundOpen, setIsAddRoundOpen] = useState(false)
   const [isFinishOpen, setIsFinishOpen] = useState(false)
+  const [isRelegateOpen, setIsRelegateOpen] = useState(false)
   const [editingMatch, setEditingMatch] = useState<Round | null>(null)
   const [groupPhaseIndex, setGroupPhaseIndex] = useState(0)
   const prevRoundsLength = useRef(0)
@@ -260,13 +262,22 @@ export default function ChampionshipDetail() {
         </div>
 
         <div className="flex items-center gap-3">
+          {championship?.relegation ?? 0 > 0 ? (
+            <Button
+              onClick={() => setIsRelegateOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-red-700 px-5 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
+            >
+              Relegate
+            </Button>
+          ) : null}
+
           <Button
             onClick={() => setIsFinishOpen(true)}
             className="inline-flex items-center gap-2 rounded-full border border-green-700 px-5 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-green-100"
           >
             Finish
           </Button>
-         
+          
           <Button
             onClick={() => setIsAddRoundOpen(true)}
             className="inline-flex items-center gap-2 rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-800"
@@ -367,6 +378,12 @@ export default function ChampionshipDetail() {
         clubs={clubs}
         isOpen={isFinishOpen}
         onClose={() => setIsFinishOpen(false)}
+      />
+      <RelegateClubModal
+        championshipId={championshipId!}
+        clubs={clubs}
+        isOpen={isRelegateOpen}
+        onClose={() => setIsRelegateOpen(false)}
       />
       <AddRoundModal
         championshipId={championshipId!}
