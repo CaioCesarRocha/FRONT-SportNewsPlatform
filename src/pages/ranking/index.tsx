@@ -27,16 +27,22 @@ function calcClubScore(club: Club) {
     }
   }
 
+  if (club.relegations) {
+    totalScore -= club.relegations.length
+  }
+
   return { totalScore, maxWeight }
 }
 
-function buildClubRanking(clubs: Club[]): ClubRanking[] {
-  return clubs
-    .map((club) => ({ club, ...calcClubScore(club) }))
-    .sort((a, b) => {
-      if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore
-      return b.maxWeight - a.maxWeight
-    })
+function buildSortedClubRanking(clubs: Club[], order: 'desc' | 'asc'): ClubRanking[] {
+  const ranked = clubs.map((club) => ({ club, ...calcClubScore(club) }))
+
+  ranked.sort((a, b) => {
+    if (b.totalScore !== a.totalScore) return order === 'desc' ? b.totalScore - a.totalScore : a.totalScore - b.totalScore
+    return order === 'desc' ? b.maxWeight - a.maxWeight : a.maxWeight - b.maxWeight
+  })
+
+  return ranked
 }
 
 function buildCountryRanking(clubs: Club[]): CountryRanking[] {
@@ -174,14 +180,26 @@ function PerformanceTable({ ranking, sortBy, onSortChange, order, onOrderChange 
   )
 }
 
-function ClubTable({ ranking }: { ranking: ClubRanking[] }) {
+function ClubTable({ ranking, order, onOrderChange }: {
+  ranking: ClubRanking[]
+  order: 'desc' | 'asc'
+  onOrderChange: (value: 'desc' | 'asc') => void
+}) {
   const positions = getDisplayPositions(ranking)
 
   return (
     <div className="flex-[2] max-h-[80vh] overflow-auto rounded-lg border border-[var(--border)]">
-      <h3 className="sticky top-0 z-10 bg-[var(--bg)] px-4 py-2 text-sm font-semibold text-[var(--text-h)] border-b border-[var(--border)]">
-        Club Ranking
-      </h3>
+      <div className="sticky top-0 z-10 flex items-center justify-between gap-2 bg-[var(--bg)] px-4 py-2 border-b border-[var(--border)]">
+        <h3 className="text-sm font-semibold text-[var(--text-h)]">Club Ranking</h3>
+        <div className="flex gap-1">
+          <button
+            onClick={() => onOrderChange(order === 'desc' ? 'asc' : 'desc')}
+            className="rounded px-2.5 py-1 text-xs font-medium transition-colors bg-gray-300/70 text-gray-900 hover:bg-gray-500/70 cursor-pointer"
+          >
+            {order === 'desc' ? 'Desc ↓' : 'Asc ↑'}
+          </button>
+        </div>
+      </div>
       <table className="w-full border-collapse text-sm">
         <thead className="sticky top-0 z-10 bg-[var(--bg)]">
           <tr className="border-b border-[var(--border)] text-left text-xs font-semibold uppercase tracking-wider text-[var(--text)]">
@@ -288,9 +306,10 @@ function CountryTable({ ranking }: { ranking: CountryRanking[] }) {
 export default function Ranking() {
   const [sortBy, setSortBy] = useState<'victory' | 'pontuation' | 'performance'>('pontuation')
   const [order, setOrder] = useState<'desc' | 'asc'>('desc')
+  const [clubOrder, setClubOrder] = useState<'desc' | 'asc'>('desc')
   const { clubs, error, isLoading } = useListAllClubs()
   const { clubsPerformance, error: perfError, isLoading: perfLoading } = useGetClubsPerformance(sortBy)
-  const clubRanking = buildClubRanking(clubs)
+  const clubRanking = buildSortedClubRanking(clubs, clubOrder)
   const countryRanking = buildCountryRanking(clubs)
 
   return (
@@ -307,7 +326,7 @@ export default function Ranking() {
       {!isLoading && !error && clubs.length > 0 ? (
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4">
-            <ClubTable ranking={clubRanking} />
+            <ClubTable ranking={clubRanking} order={clubOrder} onOrderChange={setClubOrder} />
             <CountryTable ranking={countryRanking} />
           </div>
           <PerformanceTable
