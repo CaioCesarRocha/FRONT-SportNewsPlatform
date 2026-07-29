@@ -101,14 +101,17 @@ function PositionBadge({ position }: { position: number }) {
 function PerformanceTable({ ranking, sortBy, onSortChange, order, onOrderChange }: {
   ranking: ClubPerformance[]
   sortBy: string
-  onSortChange: (value: 'victory' | 'pontuation' | 'performance') => void
+  onSortChange: (value: 'victory' | 'pontuation' | 'performance' | 'goalsPro' | 'goalsDown' | 'goalDiff') => void
   order: 'desc' | 'asc'
   onOrderChange: (value: 'desc' | 'asc') => void
 }) {
-  const options: { value: 'victory' | 'pontuation' | 'performance'; label: string }[] = [
+  const options: { value: 'victory' | 'pontuation' | 'performance' | 'goalsPro' | 'goalsDown' | 'goalDiff'; label: string }[] = [
     { value: 'victory', label: 'Victory' },
     { value: 'pontuation', label: 'Pontuation' },
     { value: 'performance', label: 'Performance' },
+    { value: 'goalsPro', label: 'Goals Pro' },
+    { value: 'goalsDown', label: 'Goals Down' },
+    { value: 'goalDiff', label: 'Goal Diff' },
   ]
 
   return (
@@ -146,6 +149,9 @@ function PerformanceTable({ ranking, sortBy, onSortChange, order, onOrderChange 
             <th className="px-4 py-3 w-20 text-right">W</th>
             <th className="px-4 py-3 w-20 text-right">D</th>
             <th className="px-4 py-3 w-20 text-right">L</th>
+            <th className="px-4 py-3 w-20 text-right">GP</th>
+            <th className="px-4 py-3 w-20 text-right">GD</th>
+            <th className="px-4 py-3 w-20 text-right">Dif</th>
             <th className="px-4 py-3 w-24 text-right">%</th>
           </tr>
         </thead>
@@ -171,6 +177,9 @@ function PerformanceTable({ ranking, sortBy, onSortChange, order, onOrderChange 
               <td className="px-4 py-3 text-right text-[var(--text)]">{item.victories}</td>
               <td className="px-4 py-3 text-right text-[var(--text)]">{item.draws}</td>
               <td className="px-4 py-3 text-right text-[var(--text)]">{item.defeats}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.goalsPro}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.goalsDown}</td>
+              <td className="px-4 py-3 text-right text-[var(--text)]">{item.goalDiff}</td>
               <td className="px-4 py-3 text-right font-semibold text-[var(--text-h)]">{(item.performance * 100).toFixed(2).replace('.', ',')}%</td>
             </tr>
           ))}
@@ -304,7 +313,7 @@ function CountryTable({ ranking }: { ranking: CountryRanking[] }) {
 }
 
 export default function Ranking() {
-  const [sortBy, setSortBy] = useState<'victory' | 'pontuation' | 'performance'>('pontuation')
+  const [sortBy, setSortBy] = useState<'victory' | 'pontuation' | 'performance' | 'goalsPro' | 'goalsDown' | 'goalDiff'>('pontuation')
   const [order, setOrder] = useState<'desc' | 'asc'>('desc')
   const [clubOrder, setClubOrder] = useState<'desc' | 'asc'>('desc')
   const { clubs, error, isLoading } = useListAllClubs()

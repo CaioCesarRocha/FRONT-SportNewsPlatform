@@ -54,6 +54,9 @@ export type ClubPerformance = {
   defeats: number;
   pontuation: number;
   performance: number;
+  goalsPro: number;
+  goalsDown: number;
+  goalDiff: number;
   games: number;
 };
    

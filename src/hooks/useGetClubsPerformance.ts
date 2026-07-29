@@ -3,7 +3,7 @@ import { API_URL } from '../utils/consts'
 import { GET_CLUBS_PERFORMANCE_KEY } from '../utils/keys'
 import type { ClubPerformance } from '../utils/types'
 
-type SortBy = 'victory' | 'pontuation' | 'performance'
+type SortBy = 'victory' | 'pontuation' | 'performance' | 'goalsPro' | 'goalsDown' | 'goalDiff'
 
 export default function useGetClubsPerformance(sortBy: SortBy = 'pontuation') {
   const { data, error, isFetching } = useQuery({
