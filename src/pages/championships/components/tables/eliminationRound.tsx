@@ -5,12 +5,16 @@ import type { Club, Round } from '../../../../utils/types'
 export const PHASE_ORDER = ['fase 128', 'fase 64', 'fase 32', 'octfinal', 'quarterfinal', 'semifinal', 'final']
 
 export const phasesChamp24teams = ['octfinal a', 'octfinal b', 'quarterfinal', 'semifinal', 'final']
+export const phasesChamp20teams = ['playoff 1', 'octfinal', 'quarterfinal', 'semifinal', 'final']
+export const phasesChamp12teams = ['quarterfinal a', 'quarterfinal b', 'semifinal', 'final']
 
 export function getAvailablePhases(clubsCount: number): string[] {
   if (clubsCount >= 128) return PHASE_ORDER
   if (clubsCount >= 64) return PHASE_ORDER.slice(1)
   if (clubsCount >= 32) return PHASE_ORDER.slice(2)
   if (clubsCount === 24) return phasesChamp24teams
+  if (clubsCount === 20) return phasesChamp20teams
+  if (clubsCount === 12) return phasesChamp12teams
   if (clubsCount >= 16) return PHASE_ORDER.slice(3)
   if (clubsCount >= 8) return PHASE_ORDER.slice(4)
   if (clubsCount >= 4) return PHASE_ORDER.slice(5)
