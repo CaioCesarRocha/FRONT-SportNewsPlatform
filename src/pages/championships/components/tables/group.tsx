@@ -103,6 +103,7 @@ export default function GroupTable({ rounds, relegation = 0, qualifyOne = 0, qua
       if (!r) return
       const key = (r.phase || r.identifier).toLowerCase()
       if (!key.includes('group')) return
+      if (!r.identifier.toLowerCase().includes('round')) return
       const list = map.get(key) ?? []
       list.push(r)
       map.set(key, list)

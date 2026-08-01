@@ -207,7 +207,23 @@ export default function ChampionshipDetail() {
   const championshipId = id ? Number(id) : undefined
 
   const { championship, clubs, isLoading: loadingChamp } = useGetOneChampionship(championshipId)
-  const { rounds, roundIdentifiers, isLoading: loadingRounds } = useGetRounds(championshipId)
+  const { rounds: allRounds, isLoading: loadingRounds } = useGetRounds(championshipId)
+
+  const isGroups = championship?.type === ChampionshipType.Groups
+
+  const rounds = useMemo(
+    () => (isGroups ? allRounds.filter((r) => r?.identifier.toLowerCase().includes('round')) : allRounds),
+    [allRounds, isGroups],
+  )
+
+  const roundIdentifiers = useMemo(
+    () => [...new Set(rounds.map((r) => r.identifier))].sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10)
+      const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10)
+      return numA - numB
+    }),
+    [rounds],
+  )
 
   const [roundIndex, setRoundIndex] = useState(-1)
   const [isAddRoundOpen, setIsAddRoundOpen] = useState(false)
