@@ -4,6 +4,7 @@ import Autocomplete from '../../../components/autocomplete'
 import Button from '../../../components/button'
 import Input from '../../../components/input'
 import useChampionshipForm from '../../../hooks/useChampionshipForm'
+import { countries, states } from '../../../utils/consts'
 import { ChampionshipType } from '../../../utils/types'
 import type { Championship } from '../../../utils/types'
 
@@ -59,7 +60,11 @@ export default function AddChampionshipModal({
     error,
     errors,
     filteredClubs,
+    filterCountry,
+    filterState,
     handleClose,
+    handleFilterCountryChange,
+    handleFilterStateChange,
     hasMatchingClubsCount,
     hasReachedClubsLimit,
     isClubSelectionEnabled,
@@ -292,6 +297,60 @@ export default function AddChampionshipModal({
                     </span>
                   </div>
                 ) : null}
+
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <label className="flex flex-col gap-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-green-800/70">
+                      Country
+                    </span>
+                    <select
+                      value={filterCountry}
+                      onChange={(event) =>
+                        handleFilterCountryChange(event.target.value)
+                      }
+                      disabled={!isClubSelectionEnabled}
+                      className="w-full rounded-2xl border border-green-200 bg-white px-4 py-2 text-green-950 outline-none transition-colors focus:border-green-500 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      <option value="">All clubs</option>
+                      {countries.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="flex flex-col gap-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-green-800/70">
+                      State
+                    </span>
+                    {filterCountry === 'Brazil' ? (
+                      <select
+                        value={filterState}
+                        onChange={(event) =>
+                          handleFilterStateChange(event.target.value)
+                        }
+                        disabled={!isClubSelectionEnabled}
+                        className="w-full rounded-2xl border border-green-200 bg-white px-4 py-2 text-green-950 outline-none transition-colors focus:border-green-500 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        <option value="">All clubs</option>
+                        {states.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        value={filterCountry}
+                        readOnly
+                        disabled
+                        className="w-full rounded-2xl border border-green-200 bg-green-50 px-4 py-2 text-green-950/60 outline-none"
+                      />
+                    )}
+                  </label>
+                </div>
 
                 <div className="mt-3 flex flex-col gap-3">
                   <Autocomplete

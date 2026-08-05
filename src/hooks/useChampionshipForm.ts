@@ -48,7 +48,13 @@ export default function useChampionshipForm(
   const isEditing = !!editingChamp
   const queryClient = useQueryClient()
   const [clubsSearchTerm, setClubsSearchTerm] = useState('')
-  const { clubs, error: clubsError, isLoading: isClubsLoading } = useListAllClubs()
+  const [filterCountry, setFilterCountry] = useState('Brazil')
+  const [filterState, setFilterState] = useState('Minas Gerais')
+  const {
+    clubs,
+    error: clubsError,
+    isLoading: isClubsLoading,
+  } = useListAllClubs(filterCountry, filterState)
   const {
     updateChampionship,
     error: updateError,
@@ -166,6 +172,8 @@ export default function useChampionshipForm(
     } else {
       reset()
       setClubsSearchTerm('')
+      setFilterCountry('Brazil')
+      setFilterState('Minas Gerais')
       resetCreateMutation()
     }
   }, [editingChamp, isOpen, isEditing, reset, resetCreateMutation])
@@ -221,6 +229,20 @@ export default function useChampionshipForm(
     updateSelectedClubs(
       selectedClubIds.filter((selectedClubId) => selectedClubId !== clubId),
     )
+  }
+
+  const handleFilterCountryChange = (country: string) => {
+    const state = country === 'Brazil' ? 'Minas Gerais' : country
+    setFilterCountry(country)
+    setFilterState(state)
+    setClubsSearchTerm('')
+    updateSelectedClubs([])
+  }
+
+  const handleFilterStateChange = (state: string) => {
+    setFilterState(state)
+    setClubsSearchTerm('')
+    updateSelectedClubs([])
   }
 
   const nameFieldValidation = register('name', {
@@ -360,7 +382,11 @@ export default function useChampionshipForm(
     error,
     errors,
     filteredClubs,
+    filterCountry,
+    filterState,
     handleClose,
+    handleFilterCountryChange,
+    handleFilterStateChange,
     hasMatchingClubsCount,
     hasReachedClubsLimit,
     isClubSelectionEnabled,
