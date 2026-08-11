@@ -50,6 +50,7 @@ export default function useChampionshipForm(
   const [clubsSearchTerm, setClubsSearchTerm] = useState('')
   const [filterCountry, setFilterCountry] = useState('Brazil')
   const [filterState, setFilterState] = useState('Minas Gerais')
+  const [selectedClubObjects, setSelectedClubObjects] = useState<Club[]>([])
   const {
     clubs,
     error: clubsError,
@@ -174,6 +175,7 @@ export default function useChampionshipForm(
       setClubsSearchTerm('')
       setFilterCountry('Brazil')
       setFilterState('Minas Gerais')
+      setSelectedClubObjects([])
       resetCreateMutation()
     }
   }, [editingChamp, isOpen, isEditing, reset, resetCreateMutation])
@@ -193,9 +195,7 @@ export default function useChampionshipForm(
   const hasMatchingClubsCount =
     isClubSelectionEnabled && selectedClubIds.length === clubsLimit
 
-  const selectedClubs = selectedClubIds
-    .map((clubId) => clubs.find((club) => club.id === clubId))
-    .filter((club): club is Club => Boolean(club))
+  const selectedClubs = selectedClubObjects
 
   const filteredClubs = clubs.filter((club) =>
     club.name.toLowerCase().includes(clubsSearchTerm.trim().toLowerCase()),
@@ -215,11 +215,20 @@ export default function useChampionshipForm(
       updateSelectedClubs(
         selectedClubIds.filter((selectedClubId) => selectedClubId !== clubId),
       )
+      setSelectedClubObjects((list) =>
+        list.filter((club) => club.id !== clubId),
+      )
       return
     }
 
     if (!isClubSelectionEnabled || hasReachedClubsLimit) {
       return
+    }
+
+    const club = clubs.find((club) => club.id === clubId)
+
+    if (club) {
+      setSelectedClubObjects((list) => [...list, club])
     }
 
     updateSelectedClubs([...selectedClubIds, clubId])
@@ -229,6 +238,7 @@ export default function useChampionshipForm(
     updateSelectedClubs(
       selectedClubIds.filter((selectedClubId) => selectedClubId !== clubId),
     )
+    setSelectedClubObjects((list) => list.filter((club) => club.id !== clubId))
   }
 
   const handleFilterCountryChange = (country: string) => {
@@ -236,13 +246,11 @@ export default function useChampionshipForm(
     setFilterCountry(country)
     setFilterState(state)
     setClubsSearchTerm('')
-    updateSelectedClubs([])
   }
 
   const handleFilterStateChange = (state: string) => {
     setFilterState(state)
     setClubsSearchTerm('')
-    updateSelectedClubs([])
   }
 
   const nameFieldValidation = register('name', {
@@ -330,6 +338,7 @@ export default function useChampionshipForm(
     resetUpdateChampionship()
     reset()
     setClubsSearchTerm('')
+    setSelectedClubObjects([])
     onClose()
   }, [isEditing, resetCreateMutation, resetUpdateChampionship, reset, onClose])
 
