@@ -7,8 +7,10 @@ export const PHASE_ORDER = ['fase 128', 'fase 64', 'fase 32', 'octfinal', 'quart
 export const phasesChamp24teams = ['octfinal a', 'octfinal b', 'quarterfinal', 'semifinal', 'final']
 export const phasesChamp20teams = ['playoff 1', 'octfinal', 'quarterfinal', 'semifinal', 'final']
 export const phasesChamp12teams = ['quarterfinal a', 'quarterfinal b', 'semifinal', 'final']
+export const phasesChamp48teams = ['fase 32 a', 'fase 32 b', 'octfinal', 'quarterfinal', 'semifinal', 'final']
 
 export function getAvailablePhases(clubsCount: number): string[] {
+  if (clubsCount === 48) return phasesChamp48teams
   if (clubsCount >= 128) return PHASE_ORDER
   if (clubsCount >= 64) return PHASE_ORDER.slice(1)
   if (clubsCount >= 32) return PHASE_ORDER.slice(2)
