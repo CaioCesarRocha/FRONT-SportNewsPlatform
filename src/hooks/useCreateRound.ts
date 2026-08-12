@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
-import { API_URL } from '../utils/consts'
+import { API_URL, TOAST_DURATION } from '../utils/consts'
 import { GET_ROUNDS_KEY } from '../utils/keys'
 import type { Round } from '../utils/types'
 
@@ -36,7 +36,7 @@ export default function useCreateRound() {
     mutationFn: createRoundRequest,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [GET_ROUNDS_KEY] })
-      toast.success('Round created successfully.')
+      toast.success('Round created successfully.', { autoClose: TOAST_DURATION })
     },
   })
 
