@@ -295,11 +295,11 @@ export default function useChampionshipForm(
     valueAsNumber: true,
     min: {
       value: 0,
-      message: 'Qualify One must be between 0 and 10.',
+      message: 'Qualify One must be between 0 and 64.',
     },
     max: {
-      value: 10,
-      message: 'Qualify One must be between 0 and 10.',
+      value: 50,
+      message: 'Qualify One must be between 0 and 64.',
     },
   })
 

@@ -229,7 +229,7 @@ export default function AddChampionshipModal({
               <Input
                 type="number"
                 min="0"
-                max="10"
+                max="64"
                 placeholder="Ex.: 2"
                 className={inputClassName}
                 error={errors.qualifyOne?.message}
