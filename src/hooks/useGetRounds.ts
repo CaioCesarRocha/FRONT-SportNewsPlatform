@@ -15,7 +15,7 @@ async function fetchRoundsByChampionshipId(id: number, phase?: string) {
 }
 
 export default function useGetRounds(championshipId?: number, phase?: string) {
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [GET_ROUNDS_KEY, championshipId, phase],
     queryFn: () => fetchRoundsByChampionshipId(championshipId!, phase),
     enabled: Boolean(championshipId),
@@ -35,6 +35,6 @@ export default function useGetRounds(championshipId?: number, phase?: string) {
     rounds,
     roundIdentifiers,
     error: error instanceof Error ? error.message : null,
-    isLoading: isFetching,
+    isLoading,
   }
 }

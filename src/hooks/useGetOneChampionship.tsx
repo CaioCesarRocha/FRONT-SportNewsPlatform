@@ -14,7 +14,7 @@ async function fetchChampionshipById(id: number) {
 }
 
 export default function useGetOneChampionship(id?: number) {
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [GET_ONE_CHAMPIONSHIP_KEY, id],
     queryFn: () => fetchChampionshipById(id!),
     enabled: Boolean(id),
@@ -24,6 +24,6 @@ export default function useGetOneChampionship(id?: number) {
     championship: data ?? null,
     clubs: data?.clubs ?? [],
     error: error instanceof Error ? error.message : null,
-    isLoading: isFetching,
+    isLoading,
   }
 }

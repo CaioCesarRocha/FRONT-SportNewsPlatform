@@ -29,8 +29,8 @@ export default function RoundMatches({
   onEditMatch,
 }: RoundMatchesProps) {
   return (
-    <div className="w-full min-w-[320px] rounded-[6px] bg-gray-800 p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="flex h-full w-full min-w-[320px] flex-col rounded-[6px] bg-gray-800 p-4">
+      <div className="mb-4 flex shrink-0 items-center justify-between">
         <button
           onClick={onPrev}
           disabled={!hasPrev}
@@ -56,7 +56,7 @@ export default function RoundMatches({
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="min-h-0 flex-1 space-y-3 overflow-x-hidden overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {matches.map((match) => (
           <div
             key={match.id}

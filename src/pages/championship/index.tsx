@@ -348,10 +348,10 @@ export default function ChampionshipDetail() {
 
           {groupPhaseIndex === 0 ? (
             <div className="flex flex-col gap-4 lg:flex-row">
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 h-[calc(100svh_-_280px)] shrink-0 overflow-x-hidden overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <GroupTable rounds={rounds} relegation={championship?.relegation} qualifyOne={qualifyCount} qualifyTwo={qualifyTwoCount} />
               </div>
-              <div className="w-full shrink-0 lg:w-[340px]">
+              <div className="w-full h-[calc(100svh_-_280px)] shrink-0 lg:w-[340px]">
                 <RoundMatches
                   matches={matches}
                   roundIdentifier={currentIdentifier ?? ''}
